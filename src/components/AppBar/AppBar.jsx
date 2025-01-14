@@ -1,12 +1,23 @@
 import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
 import clsx from 'clsx';
 import css from './AppBar.module.css';
+import { LoginFormModal } from '../LoginFormModal/LoginFormModal';
 
 const buildLinkClass = ({ isActive }) => {
   return clsx(css.link, isActive && css.active);
 };
 
 export const AppBar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onOpenModal = () => {
+    setIsOpen(true);
+  };
+  const onCloseModal = () => {
+    setIsOpen(false);
+  };
+
   return (
     <header className={css.header}>
       <p className={css.logo}>LearnLingo</p>
@@ -18,12 +29,13 @@ export const AppBar = () => {
         <NavLink className={buildLinkClass} to="/teachers">
           Teachers
         </NavLink>
-        <NavLink className={css.link} to="/">
+        <button onClick={onOpenModal} className={css.loginBtn}>
           Log in
-        </NavLink>
+        </button>
         <button type="button" className={css.registerBtn}>
           Registration
         </button>
+        {isOpen && <LoginFormModal onCloseModal={onCloseModal} />}
       </nav>
     </header>
   );

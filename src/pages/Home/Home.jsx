@@ -1,12 +1,10 @@
 import css from './Home.module.css';
 import { AppBar } from '../../components/AppBar/AppBar';
-import { LoginFormModal } from '../../components/LoginFormModal/LoginFormModal';
 
 export default function Home() {
   return (
     <main>
       <AppBar />
-      <LoginFormModal />
       <h1 className={css.headerTitle}>
         Unlock your potential with the best{' '}
         <span className={css.headerTitlePart}>language</span> tutors
