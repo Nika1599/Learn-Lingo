@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form';
 import css from './RegisterFormModal.module.css';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { registerUser } from '../../pages/auth/operations';
+import { useDispatch } from 'react-redux';
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -10,6 +12,7 @@ const schema = yup.object().shape({
 });
 
 export const RegisterFormModal = () => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -18,10 +21,18 @@ export const RegisterFormModal = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = data => {
-    console.log({ data });
-    reset();
+
+  const onSubmit = async data => {
+    try {
+      await dispatch(
+        registerUser({ email: data.email, password: data.password }),
+      );
+      reset();
+    } catch (error) {
+      console.error('Registration error: ', error);
+    }
   };
+
   return (
     <>
       <h3 className={css.modalTitle}>Registration</h3>

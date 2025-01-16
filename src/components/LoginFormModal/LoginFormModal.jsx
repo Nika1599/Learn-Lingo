@@ -2,6 +2,8 @@ import css from './LoginFormModal.module.css';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { logInUser } from '../../pages/auth/operations';
+import { useDispatch } from 'react-redux';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -9,6 +11,7 @@ const schema = yup.object().shape({
 });
 
 export const LoginFormModal = () => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -17,9 +20,13 @@ export const LoginFormModal = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = data => {
-    console.log({ data });
-    reset();
+  const onSubmit = async data => {
+    try {
+      await dispatch(logInUser({ email: data.email, password: data.password }));
+      reset();
+    } catch (error) {
+      console.error('Login error: ', error);
+    }
   };
   return (
     <>
