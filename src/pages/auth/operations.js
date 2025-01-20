@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { auth } from './fireBase';
+import { getDatabase, ref, get } from 'firebase/database';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -16,8 +17,12 @@ export const registerUser = createAsyncThunk(
         email,
         password,
       );
-      return userCredential.user;
+      return {
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+      };
     } catch (error) {
+      console.error('Error during registration:', error.message);
       return thunkApi.rejectWithValue(error.message);
     }
   },
@@ -73,6 +78,25 @@ export const checkUserStatus = createAsyncThunk(
           },
         );
       });
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  },
+);
+
+export const fetchTeachers = createAsyncThunk(
+  'teachers/fetchTeachers',
+  async (_, thunkAPI) => {
+    try {
+      const db = getDatabase();
+      const teachersRef = ref(db, 'teachers');
+      const snapshot = await get(teachersRef);
+
+      if (snapshot.exists()) {
+        return Object.values(snapshot.val());
+      } else {
+        return thunkAPI.rejectWithValue('No teachers data available');
+      }
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
