@@ -2,6 +2,7 @@ import { TeacherCard } from './TeacherCard/TeacherCard.jsx';
 import { fetchTeachers } from '../auth/operations.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 export default function Teachers() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ export default function Teachers() {
           )}
         </>
       )}
+      <Outlet />
     </div>
   );
 }

@@ -1,10 +1,11 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import css from './TeacherCard.module.css';
 
 export const TeacherCard = ({ teacher }) => {
   return (
     <div className={css.teacherCard}>
       <p>Languages</p>
+
       <p>Lesson online</p>
       <p>Lessons done: {teacher.lessons_done}</p>
       <p> ⭐Rating:{teacher.rating}</p>
@@ -24,6 +25,7 @@ export const TeacherCard = ({ teacher }) => {
           strokeLinejoin="round"
         />
       </svg>
+      <p>{`${teacher.name} ${teacher.surname}`}</p>
       <img
         src={teacher.avatar_url}
         alt={`${teacher.name} ${teacher.surname}`}
@@ -31,9 +33,10 @@ export const TeacherCard = ({ teacher }) => {
       <p>Speaks:{teacher.languages.join(', ')}</p>
       <p>Lesson Info:{teacher.lesson_info}</p>
       <p>Conditions:{teacher.conditions}</p>
-      <Link to="more">Read more</Link>
+      <Link to={`/teachers/${teacher.id}`} state={{ teacher }}>
+        <button type="button">Read more</button>
+      </Link>
       <p>{teacher.levels.join(', ')}</p>
-      <Outlet />
     </div>
   );
 };
