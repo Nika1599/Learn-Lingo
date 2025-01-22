@@ -29,7 +29,7 @@ export const MoreInfo = () => {
         Book trial lesson
       </button>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <BookLessonsForm onClose={closeModal} />
+        <BookLessonsForm teacher={teacher} onClose={closeModal} />
       </Modal>
     </div>
   );
