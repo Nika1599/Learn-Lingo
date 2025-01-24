@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { logInUser } from '../../pages/auth/operations';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -23,9 +24,11 @@ export const LoginFormModal = () => {
   const onSubmit = async data => {
     try {
       await dispatch(logInUser({ email: data.email, password: data.password }));
+      toast.success('Login successful!');
       reset();
     } catch (error) {
       console.error('Login error: ', error);
+      toast.error('Failed to log in. Please check your credentials.');
     }
   };
   return (

@@ -2,18 +2,26 @@ import { Link } from 'react-router-dom';
 import css from './TeacherCard.module.css';
 import { addToFavorites, removeFromFavorites } from '../../auth/favouriteSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 export const TeacherCard = ({ teacher }) => {
   const dispatch = useDispatch();
   const favourites = useSelector(state => state.favourites.favourites);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
 
-  const isFavorite = favourites.includes(teacher.id); // Порівнюємо з teacher.id
+  const isFavorite = favourites.includes(teacher.id);
 
   const handleFavoriteClick = () => {
+    if (!isLoggedIn) {
+      toast.error('This feature is available for logged-in users only!');
+      return;
+    }
     if (isFavorite) {
-      dispatch(removeFromFavorites({ teacherId: teacher.id })); // Використовуємо teacher.id
+      dispatch(removeFromFavorites({ teacherId: teacher.id }));
+      toast.info('Removed from favorites.');
     } else {
       dispatch(addToFavorites({ teacherId: teacher.id }));
+      toast.success('Added to favorites.');
     }
   };
   return (

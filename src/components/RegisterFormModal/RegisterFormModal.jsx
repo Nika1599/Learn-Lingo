@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerUser } from '../../pages/auth/operations';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -27,9 +28,11 @@ export const RegisterFormModal = () => {
       await dispatch(
         registerUser({ email: data.email, password: data.password }),
       );
+      toast.success('Registration successful! Welcome!');
       reset();
     } catch (error) {
       console.error('Registration error: ', error);
+      toast.error('Failed to register. Please try again.');
     }
   };
 
